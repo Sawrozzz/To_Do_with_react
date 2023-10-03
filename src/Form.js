@@ -5,15 +5,14 @@ function Form() {
   const [list, setList] = useState([]);
 
   const handleTaskInput = (e) => {
-    setTask(e.target.value);
+    setTask(e.target.value);   //✅
   };
 
   const addTask = () => {
-    if (task.trim() !== "") {
+    if (task.trim() !== "") {  //✅
       const newTask = {
         id: Date.now(),
         text: task,
-        completed: false,
       };
       setList([...list, newTask]);
       setTask(""); // Clear the input field
@@ -31,9 +30,8 @@ function Form() {
   return (
     <>
       <div className="Forform">
-        <input
+        <input className="form"
           type="text"
-          name=""
           placeholder="Add your text Here.."
           value={task}
           onChange={handleTaskInput}
@@ -42,7 +40,7 @@ function Form() {
       <ul className="list-container">
         {list.map((task) => (
           <li className="list" key={task.id}>
-            <input
+            <input className="check"
               type="checkbox"
               checked={task.completed}
               onChange={() => toggleTask(task.id)}
