@@ -1,0 +1,3 @@
+In this project we are going to build a simple to do list app.
+We will use components, hook(UseState) and other features of react to do so.
+Letss begin . . . . . . .  . ..
