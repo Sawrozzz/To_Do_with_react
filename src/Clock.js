@@ -4,7 +4,7 @@ function DateComponent() {
   const currentDate = new Date();
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const currentDayOfWeek = daysOfWeek[currentDate.getDay()];
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString(undefined, options);
 
   return (
