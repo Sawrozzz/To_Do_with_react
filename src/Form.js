@@ -1,79 +1,72 @@
-
 import React, { useState } from "react";
 
-function Form() {
-  const [task, setTask] = useState(""); //for input
-  const [list, setList] = useState([]); // for list
-  // const [final, setFinal] = useState([])
+export default function Form() {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
+  const [visible, setVisible] = useState(false);
 
-  const handleTaskInput = (e) => {
-    setTask(e.target.value);   //✅
+  const handleAddTask = () => {
+    if (input.trim() === "") return;
+    setTodos([...todos, { id: String(todos.length + 1), title: input, status: "pending" }]);
+    setInput("");
+    setVisible(false);
   };
 
-  const addTask = () => {
-    if (task.trim() !== "") {  //✅
-      const newTask = {
-        id: Date.now(),
-        text: task,
-        completed:false
-      };
-      setList([...list, newTask]);
-      setTask(""); // Clear the input field
-    }
+  const toggleInput = () => {
+    setVisible(!visible);
   };
 
-  // const toggleTask = (taskId) => {
-  //   setList((previousTasks) =>
-  //     previousTasks.map((task) =>     
-  //       task.id === taskId ?
-  //        { ...task, completed: !task.completed }: task
-  //     )
-  //   );
-  // };
-
-const toggleTask =(e)=>{
-  list.map((task)=>{
-    if(task.id===e.target.id)
-    {
-      return{
-        ...task, completed:e.target.checked? "completed":"pending"
+  const handleOnChange = (e) => {
+    const updatedTodo = todos.map((todo) => {
+      if (todo.id === e.target.id) {
+        return { ...todo, status: e.target.checked ? "completed" : "pending" };
       }
-      return task;
-    }
-  })
-}
+      return todo;
+    });
 
+    setTodos(updatedTodo);
+  };
 
+  const handleTextOnChange = (e) => {
+    setInput(e.target.value);
+  };
 
   return (
-    <>
-      <div className="Forform">
-        <input className="form"
-          type="text"
-          placeholder="Add your text Here.."
-          value={task}
-          onChange={handleTaskInput}
+    <div>
+
+
+    {todos.map((todo) => (
+      <div className="list" key={todo.id} style={{ display: "flex" }}>
+        <h3
+          style={{
+            // marginRight: 20,
+            textDecoration: todo.status === "completed" ? "line-through" : "",
+            color: todo.status === "completed" ? "gray" : "black",
+          }}
+        >
+          {todo.title}
+        </h3>
+        <input className="mylist"
+          type="checkbox"
+          id={todo.id}
+          checked={todo.status === "completed"}
+          onChange={handleOnChange}
         />
+      </div>
+    ))}
+      {visible ? (
+        <div>
+          <input className="forInput"
+            type="text"
+            value={input}
+            id={"input"}
+            onChange={handleTextOnChange}
+          />
+          <button className="submitBtn" onClick={handleAddTask}>Add todo</button>
         </div>
-      <ol className="list-container">
-        {list.map((task) =>  (
-          
-          <li className="list" key={task.id} >
-            <input className="check"
-              type="checkbox" 
-              id={task.id}
-              checked={task.complete}
-              onChange={() => toggleTask(task.id)}
-            />
-            {task.text}
-          </li>
-        ))}
-      </ol>
-      <button className="btn" onClick={addTask}>
-      +
-    </button>
-    </>
+      ) : (
+        <button className="btn" onClick={toggleInput}>+</button>
+      )}
+    </div>
   );
 }
-
-export default Form;
